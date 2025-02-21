@@ -2,25 +2,20 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout Code') {
-            steps {
-                checkout scm
-            }
-        }
-
+        
         stage('Restore Dependencies') {
             steps {
                 sh 'dotnet restore'
             }
         }
 
-        stage('Build Project') {
+        stage('Build') {
             steps {
-                sh 'dotnet build --no-restore' // Avoid duplicate restore
+                sh 'dotnet build --no-restore'
             }
         }
 
-        stage('Run Dotnet Tests') {
+        stage('Run Tests') {
             steps {
                 sh 'dotnet test --no-build --verbosity normal'
             }
