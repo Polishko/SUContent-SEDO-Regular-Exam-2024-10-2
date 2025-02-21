@@ -2,6 +2,12 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Restore Dependencies') {
             steps {
                 sh 'dotnet restore'
@@ -16,7 +22,7 @@ pipeline {
 
         stage('Run Dotnet Tests') {
             steps {
-                sh 'dotnet test --no-build --verbosity-normal'
+                sh 'dotnet test --no-build --verbosity normal'
             }
         }
     }
