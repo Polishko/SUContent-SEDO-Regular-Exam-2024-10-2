@@ -16,7 +16,7 @@ pipeline {
 
         stage('Run Dotnet Tests') {
             steps {
-                sh 'dotnet test --no-restore --logger trx --results-directory'
+                sh 'dotnet test --no-build --verbosity-normal'
             }
         }
     }
