@@ -30,8 +30,8 @@ pipeline {
         stage('Verify Workspace') {
             steps {
                 sh 'pwd'  // Print current directory
-                sh 'ls -lah'  // Show files in workspace
-                sh 'git rev-parse --is-inside-work-tree || echo "Not a git repository!"'
+                sh 'ls -lah'  // Show all files
+                sh 'git rev-parse --is-inside-work-tree'
             }
         }
 
@@ -39,7 +39,7 @@ pipeline {
             steps {
                 script {
                     dir('SUContent-SEDO-Regular-Exam-2024-10-2') {
-                        sh 'pwd'  // Print working directory
+                        sh 'pwd'  // Debug: Print working directory
                         sh 'git rev-parse --is-inside-work-tree'
                         sh 'git status'
                     }
@@ -49,24 +49,30 @@ pipeline {
 
         stage('Restore Dependencies') {
             steps {
-                dir('SUContent-SEDO-Regular-Exam-2024-10-2') {  // Force Jenkins to use the repo directory
-                    sh 'dotnet restore'
+                script {
+                    dir('HomiesProject') {  // Run in the correct directory!
+                        sh 'dotnet restore Homies.sln'  // Specify the solution file
+                    }
                 }
             }
         }
 
         stage('Build') {
             steps {
-                dir('SUContent-SEDO-Regular-Exam-2024-10-2') {
-                    sh 'dotnet build --no-restore'
+                script {
+                    dir('HomiesProject') {
+                        sh 'dotnet build Homies.sln --no-restore'
+                    }
                 }
             }
         }
 
         stage('Run Tests') {
             steps {
-                dir('SUContent-SEDO-Regular-Exam-2024-10-2') {
-                    sh 'dotnet test --no-build --verbosity normal'
+                script {
+                    dir('HomiesProject') {
+                        sh 'dotnet test Homies.sln --no-build --verbosity normal'
+                    }
                 }
             }
         }
