@@ -16,7 +16,7 @@ pipeline {
 
         stage('Run Dotnet Tests') {
             steps {
-                sh 'dotnet test --no-restore --logger trx --results-directory HouseRentingSystem.Tests/TestResults'
+                sh 'dotnet test --no-restore --logger trx --results-directory'
             }
         }
     }
